@@ -8,6 +8,9 @@ import { useRegister }  from "@/features/auth/model/useRegister";
 import { Input }        from "@/shared/ui/Input";
 import { Button }       from "@/shared/ui/Button";
 import { theme }        from "@/core/styles/theme";
+import {
+  isPasswordSecure, PASSWORD_POLICY_DESCRIPTION
+} from "@/shared/lib/passwordPolicy";
  
 export const RegisterPage = () => {
   const [email,    setEmail]    = useState("");
@@ -21,8 +24,8 @@ export const RegisterPage = () => {
       Alert.alert("Campos requeridos", "Completa todos los campos.");
       return;
     }
-    if (password.length < 8) {
-      Alert.alert("Contraseña débil", "Mínimo 8 caracteres.");
+    if (!isPasswordSecure(password)) {
+      Alert.alert("Contraseña débil", PASSWORD_POLICY_DESCRIPTION);
       return;
     }
     if (password !== confirm) {
@@ -75,7 +78,8 @@ export const RegisterPage = () => {
               placeholder="tu@correo.com" />
             <Input label="Contraseña" value={password}
               onChangeText={setPassword} secureTextEntry
-              placeholder="Mínimo 8 caracteres" />
+              placeholder="Escribe una contraseña segura" />
+            <Text style={styles.passwordPolicy}>{PASSWORD_POLICY_DESCRIPTION}</Text>
             <Input label="Confirmar contraseña" value={confirm}
               onChangeText={setConfirm} secureTextEntry
               placeholder="Repite tu contraseña" />
@@ -114,6 +118,7 @@ const styles = StyleSheet.create({
   link:             { color: theme.colors.accent, fontSize:15,
                       fontWeight:"600", marginTop:8 },
   linkMuted:        { color: theme.colors.textMuted, fontSize:14 },
+  passwordPolicy:   { color: theme.colors.textMuted, fontSize:12, marginTop:-10 },
   successContainer: { flex:1, backgroundColor: theme.colors.bg,
                       justifyContent:"center", alignItems:"center", padding:32 },
   successIcon:      { fontSize:72, marginBottom:24 },

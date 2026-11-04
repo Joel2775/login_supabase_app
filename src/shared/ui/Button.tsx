@@ -1,6 +1,9 @@
 import {
   TouchableOpacity, Text, ActivityIndicator, StyleSheet
 } from "react-native";
+
+// src/shared/ui/Button.tsx
+import { useLogin } from "@/features/auth/model/useLogin";
  
 interface ButtonProps {
   onPress:    () => void;

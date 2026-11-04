@@ -2,6 +2,9 @@ import { Button } from "@/shared/ui/Button";
 import { Input } from "@/shared/ui/Input";
 import { useState } from "react";
 import { useResetPassword } from "../model/useResetPassword";
+import {
+  isPasswordSecure, PASSWORD_POLICY_DESCRIPTION
+} from "@/shared/lib/passwordPolicy";
 
 export const ResetPasswordForm = () => {
   const [password, setPassword] = useState("");
@@ -13,8 +16,8 @@ export const ResetPasswordForm = () => {
   const handleSubmit = async () => {
     setDidSubmit(true);
     setValError("");
-    if (password.length < 8) {
-      setValError("La contraseña debe tener al menos 8 caracteres.");
+    if (!isPasswordSecure(password)) {
+      setValError(PASSWORD_POLICY_DESCRIPTION);
       return;
     }
     if (password !== confirm) {
@@ -53,8 +56,11 @@ export const ResetPasswordForm = () => {
         type="password"
         value={password}
         onChange={setPassword}
-        placeholder="Mínimo 8 caracteres"
+        placeholder="Escribe una contraseña segura"
       />
+      <p style={{ color: "#64748B", fontSize: "12px", margin: "-10px 0 0" }}>
+        {PASSWORD_POLICY_DESCRIPTION}
+      </p>
       <Input
         label="Confirmar contraseña"
         type="password"
